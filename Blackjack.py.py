@@ -94,7 +94,7 @@ def regler():
     print("Double - Dubbla din insats och få ett till sista kort.")
     print("Split - Om du får två kort med samma valör kan du splitta dem och spela med två händer.")
     print("Insurance - Om dealerns första kort är ett ess kan du välja att satsa upp till hälften av din insats på att dealern får blackjack.")
-    print("Give upp - Om du inte gillar dina kort kan du ge upp och få hälften av din insats tillbaka under första rundan.")
+    print("give up - Om du inte gillar dina kort kan du ge upp och få hälften av din insats tillbaka under första rundan.")
     print("Charlie - Om du får 5 kort utan att gå över 21 vinner du automatiskt.")
     print("Highscore - Se topplistan.")
     print("------------------------------------------\n")
@@ -227,8 +227,8 @@ def give_up(spelare, chips):
     chips.bet = chips.bet / 2
     chips.lose_bet()
     print("Du har valt att ge upp. Därmed får du tillbaka hälften av din insats.")
-    
-def insurance(seplare, dealer, chips):
+
+def insurance(spelare, dealer, chips):
     if dealer.hand[1].valuta == "Ess" and spelare.item_count == 2:
         print("--------------------------------------------------")
         print("Du kan välja att försäkra dig mot att dealern får blackjack. Det vill säga, eftersom dealern visar ett ess kan du bett upp till hälften av ditt bett i försäkring.\nDu vinner det bettet om dealern får 21 på två kort.")
@@ -293,12 +293,12 @@ def split(kortlek):
         charlie(spelare_hand2, spelare_chips2)
         playing = False
 
-    if spelare_hand.hand_value <= 21 or spelare_hand2.hand_value <= 21:
+    if spelare_hand.hand_value <= 21 or spelare_hand2.hand_value <= 21 and hand1_end == False or hand2_end == False:
         input("Tryck enter för att se dealerns kort.")
-    if spelare_hand.hand_value <= 21 or hand1_end == False:
+    if spelare_hand.hand_value <= 21 and hand1_end == False:
         input("\nDealerns kort mot din första hand.")
         check_vinst(spelare_hand, dealer_hand, spelare_chips)
-    if spelare_hand2.hand_value <= 21 or hand2_end == False:
+    if spelare_hand2.hand_value <= 21 and hand2_end == False:
         input("\nDealerns kort mot din andra hand.")
         check_vinst(spelare_hand2, dealer_hand, spelare_chips2)
 
@@ -317,7 +317,7 @@ def hit_or_stand(kortlek, hand, chips):
     while True:
         #Checkar om man kan splitta
         if hand.item_count == 2 and hand.hand[0].valuta == hand.hand[1].valuta and chips.total >= chips.bet*2 and split_check == False:
-            hs = input("\nHit, Stand, Double down, Split, Give upp\n")
+            hs = input("\nHit, Stand, Double down, Split, give up\n")
             if hs == "":
                 continue
             elif hs.lower() == "split":
@@ -339,7 +339,6 @@ def hit_or_stand(kortlek, hand, chips):
                     switch(hand)
             elif hs.lower()[0] == "g":
                 give_up(hand, chips)
-                switch(hand)
             else:
                 print("Försök igen.")
                 continue
@@ -366,7 +365,6 @@ def hit_or_stand(kortlek, hand, chips):
                     switch(hand)
             elif hs.lower()[0] == "g":
                 give_up(hand, chips)
-                switch(hand)
             else:
                 print("Försök igen.")
                 continue
